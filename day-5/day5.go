@@ -87,24 +87,21 @@ func hasNaughtyStr(str *string) bool {
 	return false
 }
 
+type pair struct {
+	x byte
+	y byte
+}
+
 // It contains a pair of any two letters that appears at least twice in the string without overlapping
 func hasTwoPair(str *string) bool {
-	strLen := len(*str)
-	// O(N^2) horribleness
-	for i := 0; i < strLen-1; i++ {
-		if i > 1 {
-			if strings.Contains((*str)[:i-1], (*str)[i:i+2]) {
-				//fmt.Printf("%s is found on the left (%s)\n", (*str)[i:i+2], (*str)[:i-1])
-				return true
-			}
+	m := make(map[pair]int)
+	for i := 0; i < len(*str)-1; i++ {
+		p := pair{(*str)[i], (*str)[i+1]}
+		if m[p] != 0 && i-m[p] > 0 {
+			return true
 		}
 
-		if i < strLen-3 {
-			if strings.Contains((*str)[i+2:], (*str)[i:i+2]) {
-				//fmt.Printf("%s is found on the right (%s)\n", (*str)[i:i+2], (*str)[i+2:])
-				return true
-			}
-		}
+		m[p] = i + 1
 	}
 
 	return false
