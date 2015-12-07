@@ -97,7 +97,7 @@ func hasTwoPair(str *string) bool {
 	m := make(map[pair]int)
 	for i := 0; i < len(*str)-1; i++ {
 		p := pair{(*str)[i], (*str)[i+1]}
-		if m[p] != 0 && i-m[p] > 0 {
+		if m[p] != 0 && m[p] != i {
 			return true
 		}
 
