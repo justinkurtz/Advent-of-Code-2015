@@ -12,7 +12,8 @@ import (
 func main() {
 	scanner := bufio.NewScanner(os.Stdin)
 
-	result := 0
+	paper := 0
+	ribbons := 0
 	for scanner.Scan() {
 		line := scanner.Text()
 		if err := scanner.Err(); err != nil {
@@ -21,10 +22,12 @@ func main() {
 		}
 
 		dims := getDims(&line)
-		result += getSurfaceArea(dims) + getExtraArea(dims)
+		paper += getSurfaceArea(dims) + getExtraArea(dims)
+		ribbons += getVolume(dims) + getSmallestPerim(dims)
 	}
 
-	fmt.Printf("The elves need %d square feet of wrapping paper.\n", result)
+	fmt.Printf("The elves need %d square feet of wrapping paper.\n", paper)
+	fmt.Printf("The elves need %d feet of ribbon.\n", ribbons)
 }
 
 func getDims(str *string) *[]int {
@@ -37,6 +40,14 @@ func getDims(str *string) *[]int {
 	dims := []int{l, w, h}
 	sort.Ints(dims)
 	return &dims
+}
+
+func getSmallestPerim(dims *[]int) int {
+	return (*dims)[0]*2 + (*dims)[1]*2
+}
+
+func getVolume(dims *[]int) int {
+	return (*dims)[0] * (*dims)[1] * (*dims)[2]
 }
 
 func getSurfaceArea(dims *[]int) int {
